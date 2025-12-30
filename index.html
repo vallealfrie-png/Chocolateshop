@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chocolate Shop Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Tailwind Custom Theme -->
+  <!-- Tailwind Theme -->
   <script>
     tailwind.config = {
       theme: {
@@ -23,9 +23,9 @@
   </script>
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-cocoa via-chocolate to-black flex items-center justify-center">
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-cocoa via-chocolate to-black">
 
-  <!-- Background blur blobs -->
+  <!-- Background blur -->
   <div class="absolute w-72 h-72 bg-amber-500 rounded-full blur-3xl opacity-20 top-10 left-10"></div>
   <div class="absolute w-72 h-72 bg-orange-700 rounded-full blur-3xl opacity-20 bottom-10 right-10"></div>
 
@@ -38,7 +38,7 @@
       🍫 Chocolate Shop
     </h1>
     <p class="text-center text-white/70 mb-6">
-      Sign in to your dashboard
+      POS Login
     </p>
 
     <form id="loginForm" class="space-y-4">
@@ -75,25 +75,56 @@
     </p>
   </div>
 
-  <!-- Supabase Script -->
-  <script type="module" src="supabase.js"></script>
-
-  <!-- Simple Fade Animation -->
+  <!-- Animation -->
   <style>
     .animate-fade-in {
       animation: fadeIn 1s ease-out forwards;
     }
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
+
+  <!-- SUPABASE LOGIN LOGIC -->
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+    // ✅ YOUR SUPABASE CREDENTIALS
+    const SUPABASE_URL = 'https://ljnympazqtjzyytnxouu.supabase.co'
+    const SUPABASE_ANON_KEY = 'sb_publishable__dsXi17HgDK0pXh24-hEaA_4kc7o79r'
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    const form = document.getElementById('loginForm')
+    const message = document.getElementById('message')
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      message.textContent = 'Logging in...'
+
+      const email = document.getElementById('email').value
+      const password = document.getElementById('password').value
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
+
+      if (error) {
+        message.textContent = error.message
+      } else {
+        message.textContent = 'Login successful 🎉'
+        message.classList.remove('text-red-400')
+        message.classList.add('text-green-400')
+
+        setTimeout(() => {
+          window.location.href = 'dashboard.html'
+        }, 1000)
+      }
+    })
+  </script>
 
 </body>
 </html>
