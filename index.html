@@ -106,12 +106,13 @@
     }
 
     document.getElementById('googleBtn').onclick = async () => {
-      await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: window.location.origin }
-      })
+  await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: 'https://vallealfrie-png.github.io/Chocolateshop/'
     }
-
+  })
+}
     document.getElementById('facebookBtn').onclick = async () => {
       await supabase.auth.signInWithOAuth({
         provider: 'facebook',
@@ -135,3 +136,4 @@
 
 </body>
 </html>
+
