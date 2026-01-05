@@ -114,12 +114,13 @@
   })
 }
     document.getElementById('facebookBtn').onclick = async () => {
-      await supabase.auth.signInWithOAuth({
-        provider: 'facebook',
-        options: { redirectTo: window.location.origin }
-      })
+  await supabase.auth.signInWithOAuth({
+    provider: 'facebook',
+    options: {
+      redirectTo: 'https://vallealfrie-png.github.io/Chocolateshop/'
     }
-
+  })
+}
     function handleResult(error) {
       if (error) {
         message.textContent = error.message
@@ -136,4 +137,5 @@
 
 </body>
 </html>
+
 
